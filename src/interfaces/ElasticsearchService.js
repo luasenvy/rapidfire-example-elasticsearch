@@ -10,14 +10,16 @@ class ElasticsearchService extends Service {
 
   constructor() {
     super()
+
+    this._elastic = null
   }
 
   get elastic() {
-    return this._db
+    return this._elastic
   }
 
   set elastic(elastic) {
-    this._db = elastic
+    this._elastic = elastic
   }
 }
 

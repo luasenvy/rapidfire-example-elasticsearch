@@ -9,8 +9,8 @@ class ElasticsearchServiceLoader extends ServiceLoader {
     super()
   }
 
-  async load({ dbs, express, Service: ElasticsearchService }) {
-    const elastic = dbs.find(db => db instanceof Elasticsearch)
+  async load({ express, Service: ElasticsearchService }) {
+    const elastic = this.$rapidfire.dbs.find(db => db instanceof Elasticsearch)
 
     if (ElasticsearchService.index) {
       try {
@@ -22,7 +22,10 @@ class ElasticsearchServiceLoader extends ServiceLoader {
     }
 
     const service = new ElasticsearchService({ router: express.Router() })
-    service.db = elastic
+
+    service.$rapidfire = this.$rapidfire
+    service.elastic = elastic
+
     return service
   }
 }
