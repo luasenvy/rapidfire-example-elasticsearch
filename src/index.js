@@ -29,7 +29,7 @@ const fn = {
 }
 
 async function main() {
-  // Create a new MongoClient
+  // Create a new Elasticsearch Client
   const client = new Elasticsearch(constants.elasticsearch)
 
   try {
