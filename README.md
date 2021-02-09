@@ -1,6 +1,6 @@
 ```
-git clone https://github.com/luasenvy/rapidfire-example-mongodb
-cd rapidfire-example-mongodb
+git clone https://github.com/luasenvy/rapidfire-example-elasticsearch
+cd rapidfire-example-elasticsearch
 npm i
 npm start
 ```
