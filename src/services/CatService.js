@@ -6,10 +6,7 @@
  *   ██║  ██║ ╚═╝ ██║  ██║       ╚██████╔╝  ██║  ██║     ██║     ███████║   *
  *   ╚═╝  ╚═╝     ╚═╝  ╚═╝        ╚═════╝   ╚═╝  ╚═╝     ╚═╝     ╚══════╝   *
  ************************************************************************** */
-import { Interfaces } from '@luasenvy/rapidfire'
-import { Client as ElasticsearchClient } from '@elastic/elasticsearch'
-
-import ElasticsearchServiceLoader from '../loaders/ElasticsearchServiceLoader.js'
+import ElasticsearchService from '../interfaces/ElasticsearchService.js'
 
 /* **************************************************************************
  *                  ██╗   ██╗   █████╗   ██████╗   ███████╗                 *
@@ -28,16 +25,17 @@ import ElasticsearchServiceLoader from '../loaders/ElasticsearchServiceLoader.js
  *                      ██║  ██║  ╚██████╔╝  ██║ ╚████║                     *
  *                      ╚═╝  ╚═╝   ╚═════╝   ╚═╝  ╚═══╝                     *
  ************************************************************************** */
-class ElasticsearchService extends Interfaces.Service {
-  // loader
-  static loader = ElasticsearchServiceLoader
-
-  constructor() {
+class CatService extends ElasticsearchService {
+  constructor({ router }) {
     super()
+
+    router.get('/api/_cat/indicies', (req, res, next) => this._catIndicies(req, res).catch(next))
   }
 
-  get elastic() {
-    return this.$rapidfire.dbs.find(client => client instanceof ElasticsearchClient)
+  async _catIndicies(req, res) {
+    const { body } = await this.elastic.cat.indices({ format: 'json' })
+
+    res.json(body)
   }
 }
 
@@ -49,4 +47,4 @@ class ElasticsearchService extends Interfaces.Service {
  *      ██║  ██║  ███████╗     ██║     ╚██████╔╝  ██║  ██║  ██║ ╚████║      *
  *      ╚═╝  ╚═╝  ╚══════╝     ╚═╝      ╚═════╝   ╚═╝  ╚═╝  ╚═╝  ╚═══╝      *
  ************************************************************************** */
-export default ElasticsearchService
+export default CatService

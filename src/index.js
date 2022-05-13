@@ -1,8 +1,27 @@
-const path = require('path')
+/* **************************************************************************
+ *   ██╗  ███╗   ███╗  ██████╗    ██████╗   ██████╗   ████████╗  ███████╗   *
+ *   ██║  ████╗ ████║  ██╔══██╗  ██╔═══██╗  ██╔══██╗  ╚══██╔══╝  ██╔════╝   *
+ *   ██║  ██╔████╔██║  ██████╔╝  ██║   ██║  ██████╔╝     ██║     ███████╗   *
+ *   ██║  ██║╚██╔╝██║  ██╔═══╝   ██║   ██║  ██╔══██╗     ██║     ╚════██║   *
+ *   ██║  ██║ ╚═╝ ██║  ██║       ╚██████╔╝  ██║  ██║     ██║     ███████║   *
+ *   ╚═╝  ╚═╝     ╚═╝  ╚═╝        ╚═════╝   ╚═╝  ╚═╝     ╚═╝     ╚══════╝   *
+ ************************************************************************** */
+import { join as pathJoin, dirname as pathDirname } from 'path'
+import { fileURLToPath as urlFileURLToPath } from 'url'
 
-const { Client: Elasticsearch } = require('@elastic/elasticsearch')
+import { Client as Elasticsearch } from '@elastic/elasticsearch'
 
-const { RapidFire } = require('@luasenvy/rapidfire')
+import { RapidFire } from '@luasenvy/rapidfire'
+
+/* **************************************************************************
+ *                  ██╗   ██╗   █████╗   ██████╗   ███████╗                 *
+ *                  ██║   ██║  ██╔══██╗  ██╔══██╗  ██╔════╝                 *
+ *                  ██║   ██║  ███████║  ██████╔╝  ███████╗                 *
+ *                  ╚██╗ ██╔╝  ██╔══██║  ██╔══██╗  ╚════██║                 *
+ *                   ╚████╔╝   ██║  ██║  ██║  ██║  ███████║                 *
+ *                    ╚═══╝    ╚═╝  ╚═╝  ╚═╝  ╚═╝  ╚══════╝                 *
+ ************************************************************************** */
+const __dirname = pathDirname(urlFileURLToPath(import.meta.url))
 
 const constants = {
   elasticsearch: {
@@ -10,7 +29,6 @@ const constants = {
     auth: { username: 'username', password: 'password' },
   },
 }
-
 const fn = {
   gracefulShutdown({ err, client, eventName }) {
     if (err) console.error(err)
@@ -28,20 +46,29 @@ const fn = {
   },
 }
 
+/* **************************************************************************
+ *                      ██████╗   ██╗   ██╗  ███╗   ██╗                     *
+ *                      ██╔══██╗  ██║   ██║  ████╗  ██║                     *
+ *                      ██████╔╝  ██║   ██║  ██╔██╗ ██║                     *
+ *                      ██╔══██╗  ██║   ██║  ██║╚██╗██║                     *
+ *                      ██║  ██║  ╚██████╔╝  ██║ ╚████║                     *
+ *                      ╚═╝  ╚═╝   ╚═════╝   ╚═╝  ╚═══╝                     *
+ ************************************************************************** */
+
 async function main() {
   // Create a new Elasticsearch Client
   const client = new Elasticsearch(constants.elasticsearch)
 
   try {
     // ------------------------ Database Connection
-    consola.ready(`Database Connected To ${constants.elasticsearch.node}`)
+    console.info(`Database Connected To ${constants.elasticsearch.node}`)
 
     const rapidFire = new RapidFire({
       host: 'localhost',
       port: 8000,
       paths: {
-        loaders: path.join(__dirname, 'loaders'),
-        services: path.join(__dirname, 'services'),
+        loaders: pathJoin(__dirname, 'loaders'),
+        services: pathJoin(__dirname, 'services'),
       },
       dbs: [client],
     })
@@ -74,4 +101,12 @@ async function main() {
   }
 }
 
+/* **************************************************************************
+ *      ██████╗   ███████╗  ████████╗  ██╗   ██╗  ██████╗   ███╗   ██╗      *
+ *      ██╔══██╗  ██╔════╝  ╚══██╔══╝  ██║   ██║  ██╔══██╗  ████╗  ██║      *
+ *      ██████╔╝  █████╗       ██║     ██║   ██║  ██████╔╝  ██╔██╗ ██║      *
+ *      ██╔══██╗  ██╔══╝       ██║     ██║   ██║  ██╔══██╗  ██║╚██╗██║      *
+ *      ██║  ██║  ███████╗     ██║     ╚██████╔╝  ██║  ██║  ██║ ╚████║      *
+ *      ╚═╝  ╚═╝  ╚══════╝     ╚═╝      ╚═════╝   ╚═╝  ╚═╝  ╚═╝  ╚═══╝      *
+ ************************************************************************** */
 main()
