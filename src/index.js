@@ -29,6 +29,7 @@ const constants = {
     auth: { username: 'username', password: 'password' },
   },
 }
+
 const fn = {
   gracefulShutdown({ err, client, eventName }) {
     if (err) console.error(err)
@@ -54,7 +55,6 @@ const fn = {
  *                      ██║  ██║  ╚██████╔╝  ██║ ╚████║                     *
  *                      ╚═╝  ╚═╝   ╚═════╝   ╚═╝  ╚═══╝                     *
  ************************************************************************** */
-
 async function main() {
   // Create a new Elasticsearch Client
   const client = new Elasticsearch(constants.elasticsearch)
